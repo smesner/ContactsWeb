@@ -1,0 +1,131 @@
+﻿@model ContactsWeb.Models.ContactFormViewModel
+@{
+    ViewData["Title"] = "Kontakt forma";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0">
+                        Kontakt forma
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Index" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label">
+                                Ime *
+                            </label>
+                            <input asp-for="FirstName" class="form-control" placeholder="Unesite vaše ime" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label">
+                                Prezime *
+                            </label>
+                            <input asp-for="LastName" class="form-control" placeholder="Unesite vaše prezime" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">
+                                Email adresa *
+                            </label>
+                            <input asp-for="Email" class="form-control" type="email" placeholder="example@domain.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Count > 0)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @foreach (var error in ViewData.ModelState[""].Errors)
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                Sva polja označena sa * su obavezna.
+                            </small>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Pošalji kontakt
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a asp-action="BizContacts" class="btn btn-outline-secondary">
+                    Prikaži .biz kontakte
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function() {
+                var $submitBtn = $(this).find('button[type="submit"]');
+                $submitBtn.prop('disabled', true);
+                $submitBtn.html('Šalje se...');
+
+                setTimeout(function() {
+                    $submitBtn.prop('disabled', false);
+                    $submitBtn.html('Pošalji kontakt');
+                }, 10000);
+            });
+
+            $('input').on('blur', function() {
+                var $input = $(this);
+                var $group = $input.closest('.mb-3');
+
+                if ($input.val().trim() !== '') {
+                    $group.removeClass('has-error').addClass('has-success');
+                } else if ($input.prop('required')) {
+                    $group.removeClass('has-success').addClass('has-error');
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .has-success .form-control {
+            border-color: #28a745;
+        }
+        .has-error .form-control {
+            border-color: #dc3545;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+        }
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+        }
+        .btn-lg {
+            padding: 12px 30px;
+            border-radius: 25px;
+        }
+    </style>
+}

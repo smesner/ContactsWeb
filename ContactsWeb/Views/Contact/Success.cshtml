@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Uspješno poslano";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-success">
+                <div class="card-body text-center">
+                    <h3 class="text-success mb-3">Uspješno poslano!</h3>
+                    <p class="lead">@ViewBag.Message</p>
+                    <p class="text-muted">
+                        Hvala vam na kontaktu. Vaš zahtjev je uspješno zaprimljen i obrađen.
+                    </p>
+
+                    <div class="mt-4">
+                        <a asp-action="Index" class="btn btn-primary me-2">
+                            Novi kontakt
+                        </a>
+                        <a asp-action="BizContacts" class="btn btn-outline-secondary">
+                            .biz kontakte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        border: 2px solid #28a745;
+    }
+
+    .card-header {
+        border-radius: 13px 13px 0 0 !important;
+    }
+
+</style>
